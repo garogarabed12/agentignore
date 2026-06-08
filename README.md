@@ -10,19 +10,15 @@ AI coding tools currently use different mechanisms, or no mechanism at all, to d
 
 This leads to:
 
-* unnecessary token consumption
-* slower indexing and retrieval
-* context pollution
-* accidental exposure of sensitive information
-* inconsistent behavior across tools
+- unnecessary token consumption
+- slower indexing and retrieval
+- context pollution
+- accidental exposure of sensitive information
+- inconsistent behavior across tools
 
 ## Solution
 
-AgentIgnore introduces a dedicated file:
-
-`.agentignore`
-
-that allows developers to explicitly control which files and directories AI agents may access.
+AgentIgnore introduces a dedicated `.agentignore` file that allows developers to explicitly control which files and directories AI agents may access.
 
 ## Example
 
@@ -82,7 +78,7 @@ Some files should remain version-controlled but should not be used as agent cont
 
 ## Status
 
-AgentIgnore is currently in the proposal phase.
+> AgentIgnore is currently in the proposal phase.
 
 The project is actively seeking feedback from maintainers of AI coding tools and the broader developer community.
 
@@ -96,9 +92,9 @@ The project is actively seeking feedback from maintainers of AI coding tools and
 
 AgentIgnore is not:
 
-* an agent instruction format
-* a prompt engineering framework
-* a workflow orchestration system
-* a replacement for AGENTS.md
-* a replacement for CLAUDE.md
-* a replacement for Git
+- an agent instruction format
+- a prompt engineering framework
+- a workflow orchestration system
+- a replacement for AGENTS.md
+- a replacement for CLAUDE.md
+- a replacement for Git
