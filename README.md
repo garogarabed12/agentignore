@@ -92,9 +92,7 @@ The specification is not yet finalized and may change based on community feedbac
 
 ## Learn More
 
-- [FAQ](FAQ.md)
 - [RFC-0001](RFC-0001.md)
-- [Specification](SPEC.md)
 
 ## What AgentIgnore is NOT
 
