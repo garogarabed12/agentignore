@@ -76,9 +76,17 @@ Version control and AI context management solve different problems and therefore
 
 Some files should remain version-controlled but should not be used as agent context.
 
+## Prior Art
+
+AgentIgnore is an emerging community effort to standardize file exclusion for AI coding agents.
+
+The `.agentignore` concept has been explored independently by several developers, including [tourcoder/agentignore](https://github.com/tourcoder/agentignore/) and discussions in [agentsmd/agents.md#33](https://github.com/agentsmd/agents.md/issues/33) and the [Gemini CLI](https://github.com/google-gemini/gemini-cli/issues/4688) ecosystem.
+
+This project does not claim invention of the idea. Its goal is to provide a formal RFC and compatibility requirements that can help the ecosystem converge on a single vendor-neutral standard.
+
 ## Status
 
-> AgentIgnore is currently in the proposal phase.
+> `.agentignore` is currently in the proposal phase.
 
 The project is actively seeking feedback from maintainers of AI coding tools and the broader developer community.
 
