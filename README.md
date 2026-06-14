@@ -10,17 +10,23 @@ AI coding tools currently use different mechanisms, or no mechanism at all, to d
 
 This leads to:
 
-- unnecessary token consumption
-- slower indexing and retrieval
-- context pollution
-- accidental exposure of sensitive information
-- inconsistent behavior across tools
+* unnecessary token consumption
+* slower indexing and retrieval
+* context pollution
+* accidental exposure of sensitive information
+* inconsistent behavior across tools
 
 ## Prior Art
 
 AgentIgnore is an emerging community effort to standardize file exclusion for AI coding agents.
 
-The `.agentignore` concept has emerged independently across multiple projects and communities, including [tourcoder/agentignore](https://github.com/tourcoder/agentignore/) and discussions in [agentsmd/agents.md#33](https://github.com/agentsmd/agents.md/issues/33) and the [Gemini CLI](https://github.com/google-gemini/gemini-cli/issues/4688) ecosystem.
+The `.agentignore` concept has emerged (independently) across multiple projects and communities:
+
+* [tourcoder/agentignore](https://github.com/tourcoder/agentignore/)
+* [agentsmd/agents.md#33](https://github.com/agentsmd/agents.md/issues/33)
+* [Gemini CLI](https://github.com/google-gemini/gemini-cli/issues/4688) ecosystem.
+* [Feature Request: Support for .agentignore in Cline](https://github.com/cline/cline/discussions/5887)
+* [A way to exclude sensitive files](https://github.com/openai/codex/issues/2847)
 
 This project does not claim invention of the idea. Its goal is to provide a formal RFC and compatibility requirements that can help the ecosystem converge on a single vendor-neutral standard.
 
@@ -39,6 +45,10 @@ dist/
 *.env
 legacy/
 ```
+
+## Specification
+
+* [RFC-0001](RFC-0001.md)
 
 ## Why AgentIgnore?
 
@@ -68,7 +78,7 @@ One ignore format that works across OpenCode, Claude Code, Aider, Roo Code, Curs
 
 ### 🔄 Familiar Syntax
 
-Uses the syntax developers already know from `.gitignore`.
+Uses the syntax developers already know from `.gitignore` .
 
 ### 🛡️ Separate Security Concerns
 
@@ -90,17 +100,13 @@ Some files should remain version-controlled but should not be used as agent cont
 
 The specification is not yet finalized and may change based on community feedback.
 
-## Learn More
-
-- [RFC-0001](RFC-0001.md)
-
 ## What AgentIgnore is NOT
 
 AgentIgnore is not:
 
-- an agent instruction format
-- a prompt engineering framework
-- a workflow orchestration system
-- a replacement for AGENTS.md
-- a replacement for CLAUDE.md
-- a replacement for Git
+* an agent instruction format
+* a prompt engineering framework
+* a workflow orchestration system
+* a replacement for AGENTS.md
+* a replacement for CLAUDE.md
+* a replacement for Git
