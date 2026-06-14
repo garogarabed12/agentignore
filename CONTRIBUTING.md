@@ -52,7 +52,7 @@ It does not define prompts, agent instructions, workflow rules, permissions, aut
 
 ### Compatibility with familiar ignore semantics
 
-The project aims to use familiar `.gitignore`-style pattern behavior where possible.
+The project aims to use familiar `.gitignore` -style pattern behavior where possible.
 
 Any intentional difference from `.gitignore` semantics must be clearly documented and justified.
 
@@ -260,6 +260,6 @@ By contributing, you confirm that you have the right to submit your contribution
 
 ## Code of Conduct
 
-All contributors must follow `CODE_OF_CONDUCT.md`.
+All contributors must follow `CODE_OF_CONDUCT.md` .
 
 Technical criticism is welcome. Personal attacks are not.
