@@ -17,16 +17,20 @@ This leads to:
 * inconsistent behavior across tools
 
 ## Prior Art
-
 AgentIgnore is an emerging community effort to standardize file exclusion for AI coding agents.
 
 The `.agentignore` concept has emerged (independently) across multiple projects and communities:
 
 * [tourcoder/agentignore](https://github.com/tourcoder/agentignore/)
 * [agentsmd/agents.md#33](https://github.com/agentsmd/agents.md/issues/33)
-* [Gemini CLI](https://github.com/google-gemini/gemini-cli/issues/4688) ecosystem.
+* [Gemini CLI](https://github.com/google-gemini/gemini-cli/issues/4688) ecosystem
 * [Feature Request: Support for .agentignore in Cline](https://github.com/cline/cline/discussions/5887)
-* [A way to exclude sensitive files](https://github.com/openai/codex/issues/2847)
+* [A way to exclude sensitive files](https://github.com/openai/codex/issues/2847) (openai/codex)
+* [Feature Request: .codexignore/.aiignore file](https://github.com/openai/codex/issues/24993) (openai/codex)
+* [Feature Request: .claudeignore — exclude files from Claude Code's context](https://github.com/anthropics/claude-code/issues/29455) (anthropics/claude-code)
+* [Feature Request: .claude-ignore support](https://github.com/anthropics/claude-code/issues/30810) (anthropics/claude-code)
+* [Standardize on .agentignore Format Support](https://github.com/orgs/agentclientprotocol/discussions/49) (agentclientprotocol)
+* [yurekami/claude-agentignore](https://github.com/yurekami/claude-agentignore) — Claude Code hook implementation
 
 This project does not claim invention of the idea. Its goal is to provide a formal RFC and compatibility requirements that can help the ecosystem converge on a single vendor-neutral standard.
 
