@@ -1,0 +1,47 @@
+name: Spec Feedback
+description: Suggest a change or improvement to the AgentIgnore specification
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: section
+    attributes:
+      label: What area does this relate to?
+      options:
+        - Naming and terminology
+        - Pattern semantics
+        - Root-level behavior
+        - Expected agent behavior
+        - User override behavior
+        - Modification semantics
+        - Relationship to .gitignore
+        - Relationship to tool-specific configuration
+        - Security considerations
+        - Compatibility requirements
+        - Future work
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What are you proposing?
+      description: Be as specific as possible. Quote the relevant part of the RFC if applicable.
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why?
+      description: What problem does this solve or what does it improve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Did you consider other approaches? Why did you land here?
+    validations:
+      required: false
