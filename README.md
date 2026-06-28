@@ -82,9 +82,7 @@ Exclude noise such as archives, generated artifacts, and legacy code to help age
 
 ### 🧠 Reduce Accidental Context Exposure
 
-AgentIgnore helps prevent files from being included in passive agent operations when they do not belong in the agent's context. This can include generated files, archives, legacy code, internal documentation, local configuration examples, or files that may contain sensitive information.
-
-AgentIgnore is not a security boundary. It must not be relied on to protect secrets, private data, or confidential files from malicious tools, compromised systems, unauthorized users, or intentional exfiltration. Sensitive files still require proper access control, secret management, encryption where appropriate, and repository hygiene.
+AgentIgnore helps prevent files from being included in passive agent operations when they do not belong in the agent's context. This can include generated files, archives, legacy code, internal documentation, local configuration examples, or files that may contain sensitive information. AgentIgnore is not a security boundary. It must not be relied on to protect secrets, private data, or confidential files from malicious tools, compromised systems, unauthorized users, or intentional exfiltration. Sensitive files still require proper access control, secret management, encryption where appropriate, and repository hygiene.
 
 
 ### 📦 Vendor Neutral
@@ -98,7 +96,6 @@ Uses the syntax developers already know from `.gitignore`.
 ### 🛡️ Separate Concerns
 
 Git controls what gets committed. AgentIgnore controls what compliant tools should exclude from passive agent operations.
-
 These concerns overlap, but they are not the same. AgentIgnore is for context selection, retrieval quality, and interoperability; not for enforcing security policy.
 
 
