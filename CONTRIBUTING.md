@@ -52,7 +52,7 @@ It does not define prompts, agent instructions, workflow rules, permissions, aut
 
 ### Compatibility with familiar ignore semantics
 
-The project aims to use familiar `.gitignore` -style pattern behavior where possible.
+The project aims to use familiar `.gitignore`-style pattern behavior where possible.
 
 Any intentional difference from `.gitignore` semantics must be clearly documented and justified.
 
@@ -87,34 +87,15 @@ Use issues for:
 * Tool implementation feedback.
 * Adoption reports.
 
-A good issue includes:
+For spec feedback, use the **[Spec Feedback](../../issues/new?template=spec-feedback.yml)** issue template. It will prompt you for the relevant area, your proposal, and your rationale.
+
+For other issues, a good issue includes:
 
 * A clear title.
 * The relevant section of the RFC.
 * The expected behavior.
 * The unclear or problematic behavior.
 * A concrete example if possible.
-
-Example:
-
-```text
-Title: Clarify whether nested .agentignore files override root patterns
-
-RFC section: Pattern semantics
-
-Problem:
-RFC-0001 defines root-level .agentignore behavior but does not fully specify nested files.
-
-Example:
-Root .agentignore:
-secrets/
-
-Nested package/.agentignore:
-!secrets/example.env
-
-Question:
-Should nested negation be allowed to re-include files ignored by the root file?
-```
 
 ## Pull Requests
 
@@ -260,6 +241,6 @@ By contributing, you confirm that you have the right to submit your contribution
 
 ## Code of Conduct
 
-All contributors must follow `CODE_OF_CONDUCT.md` .
+All contributors must follow `CODE_OF_CONDUCT.md`.
 
 Technical criticism is welcome. Personal attacks are not.
