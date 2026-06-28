@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgentIgnore</title>
+  <meta name="description" content="A vendor-neutral standard for excluding files and directories from AI coding agents.">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b10;
+      --bg-soft: #111620;
+      --panel: rgba(255, 255, 255, 0.07);
+      --panel-strong: rgba(255, 255, 255, 0.12);
+      --text: #f5f7fb;
+      --muted: #aab4c2;
+      --line: rgba(255, 255, 255, 0.14);
+      --accent: #74f3c9;
+      --accent-strong: #35d6a6;
+      --violet: #a78bfa;
+      --blue: #80c7ff;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(116, 243, 201, 0.18), transparent 28rem),
+        radial-gradient(circle at 84% 6%, rgba(167, 139, 250, 0.17), transparent 30rem),
+        linear-gradient(180deg, #090b10 0%, #0b1018 48%, #090b10 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible,
+    .button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 4px;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(9, 11, 16, 0.78);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 72px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(116, 243, 201, 0.22), rgba(128, 199, 255, 0.16));
+      box-shadow: 0 12px 30px rgba(53, 214, 166, 0.12);
+      color: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap: 42px;
+      align-items: center;
+      padding: 86px 0 76px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 22px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 24px var(--accent);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 24px;
+      font-size: clamp(3.1rem, 8vw, 6.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.075em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--accent), var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lede {
+      max-width: 680px;
+      margin-bottom: 32px;
+      color: #d5dce7;
+      font-size: clamp(1.08rem, 2vw, 1.32rem);
+    }
+
+    .usp {
+      display: inline-flex;
+      margin: 0 0 22px;
+      color: var(--text);
+      font-size: clamp(1.14rem, 2.3vw, 1.55rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .button.primary {
+      border-color: rgba(116, 243, 201, 0.55);
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #03110d;
+      box-shadow: 0 18px 38px rgba(53, 214, 166, 0.22);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .pill {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.045);
+    }
+
+    .code-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035)),
+        var(--bg-soft);
+      box-shadow: var(--shadow);
+    }
+
+    .code-card::before {
+      position: absolute;
+      inset: -45% -35% auto auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: rgba(116, 243, 201, 0.14);
+      content: "";
+      filter: blur(4px);
+    }
+
+    .window-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: 0.86rem;
+    }
+
+    .light {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: #ff6b6b;
+    }
+
+    .light:nth-child(2) {
+      background: #ffd166;
+    }
+
+    .light:nth-child(3) {
+      margin-right: 8px;
+      background: var(--accent);
+    }
+
+    pre {
+      position: relative;
+      margin: 0;
+      padding: 26px;
+      overflow-x: auto;
+      color: #e7edf7;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(0.9rem, 1.8vw, 1rem);
+      line-height: 1.75;
+    }
+
+    .comment {
+      color: #7f8da1;
+    }
+
+    .pattern {
+      color: var(--accent);
+    }
+
+    .section {
+      padding: 58px 0;
+    }
+
+    .section-heading {
+      max-width: 720px;
+      margin-bottom: 28px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 12px;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1;
+      letter-spacing: -0.055em;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      min-height: 210px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.055);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(116, 243, 201, 0.48);
+      background: rgba(116, 243, 201, 0.075);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22), 0 0 34px rgba(116, 243, 201, 0.08);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.18rem;
+      letter-spacing: -0.025em;
+    }
+
+    .card p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .wide-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 20px;
+      align-items: stretch;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(116, 243, 201, 0.1), rgba(167, 139, 250, 0.08));
+    }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .steps li {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(9, 11, 16, 0.42);
+    }
+
+    .steps strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .steps span {
+      color: var(--muted);
+    }
+
+    .doc-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .doc-link {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .doc-link:hover {
+      border-color: rgba(116, 243, 201, 0.5);
+      background: rgba(116, 243, 201, 0.08);
+    }
+
+    .doc-link p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .prior-art-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .prior-art-list a {
+      display: block;
+      min-height: 100%;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.045);
+      color: #d5dce7;
+      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .prior-art-list a:hover {
+      transform: translateY(-2px);
+      border-color: rgba(116, 243, 201, 0.42);
+      background: rgba(116, 243, 201, 0.075);
+    }
+
+    .link-type {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .link-title,
+    .link-context {
+      display: block;
+    }
+
+    .link-title {
+      color: var(--text);
+      font-weight: 800;
+      letter-spacing: -0.015em;
+    }
+
+    .link-context {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .prior-art-note {
+      margin: 16px 0 0;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .arrow {
+      display: inline-grid;
+      place-items: center;
+      color: var(--accent);
+    }
+
+    .arrow svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .callout {
+      padding: 34px;
+      border: 1px solid rgba(116, 243, 201, 0.34);
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 8% 0%, rgba(116, 243, 201, 0.16), transparent 18rem),
+        rgba(255, 255, 255, 0.06);
+    }
+
+    .callout p {
+      max-width: 720px;
+      color: #d5dce7;
+      font-size: 1.08rem;
+    }
+
+    .contribute-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .contribute-panel .section-heading {
+      margin-bottom: 0;
+    }
+
+    .contribute-panel .actions {
+      justify-content: flex-end;
+      margin-bottom: 0;
+    }
+
+    .notice-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .notice-title h2 {
+      margin: 0;
+    }
+
+    .notice-icon,
+    .link-icon {
+      display: inline-grid;
+      place-items: center;
+      color: var(--accent);
+    }
+
+    .notice-icon {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(116, 243, 201, 0.34);
+      border-radius: 14px;
+      background: rgba(116, 243, 201, 0.09);
+      flex: 0 0 auto;
+    }
+
+    .notice-icon svg,
+    .link-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    .github-icon svg {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    .button .link-icon,
+    .nav-links .link-icon {
+      margin-right: 8px;
+    }
+
+    .nav-links a,
+    .button {
+      gap: 0;
+    }
+
+    .site-footer {
+      padding: 38px 0 46px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .footer-row a {
+      color: var(--text);
+      transition: color 160ms ease, text-shadow 160ms ease;
+    }
+
+    .footer-row a:hover {
+      color: var(--accent);
+      text-shadow: 0 0 18px rgba(116, 243, 201, 0.28);
+    }
+
+    @media (max-width: 820px) {
+      .shell {
+        width: min(100% - 28px, 1120px);
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 14px 0;
+      }
+
+      .nav-links {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+
+      .hero,
+      .wide-panel,
+      .contribute-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .contribute-panel .actions {
+        justify-content: flex-start;
+      }
+
+      .hero {
+        padding: 54px 0 44px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .prior-art-list {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: auto;
+      }
+
+      .section {
+        padding: 42px 0;
+      }
+
+      .footer-row {
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
+
+      .button:hover,
+      .card:hover,
+      .prior-art-list a:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell nav" aria-label="Primary navigation">
+      <a class="brand" href="./" aria-label="AgentIgnore home">
+        <span class="mark">.a</span>
+        <span>AgentIgnore</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#why">Why</a>
+        <a href="#prior-art">Prior Art</a>
+        <a href="#adopt">Adopt</a>
+        <a href="RFC-0001.html">RFC</a>
+        <a href="https://github.com/garogarabed12/agentignore"><span class="link-icon github-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.45 11.45 0 0 1 12 6c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.6-2.81 5.61-5.48 5.91.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z"></path></svg></span>GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell hero">
+      <div>
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span><span>Draft v0.1 standard for AI coding tools</span></p>
+        <h1>Ignore file for <span class="gradient-text">agent context.</span></h1>
+        <p class="usp">One file. One syntax. Every agent.</p>
+        <p class="lede">AgentIgnore defines a vendor-neutral <code>.agentignore</code> file for excluding project files from passive AI coding agent discovery, indexing, retrieval, context construction, and automated modification.</p>
+        <div class="actions">
+          <a class="button primary" href="RFC-0001.html">Read RFC-0001</a>
+          <a class="button secondary" href="https://github.com/garogarabed12/agentignore/issues/new?template=spec-feedback.yml">Contribute feedback</a>
+        </div>
+        <div class="status-row" aria-label="Project status">
+          <span class="pill">Proposal phase</span>
+          <span class="pill">Vendor neutral</span>
+          <span class="pill">Root-level .agentignore</span>
+        </div>
+      </div>
+
+      <aside class="code-card" aria-label="Example .agentignore file">
+        <div class="window-bar">
+          <span class="light" aria-hidden="true"></span>
+          <span class="light" aria-hidden="true"></span>
+          <span class="light" aria-hidden="true"></span>
+          .agentignore
+        </div>
+        <pre><code><span class="comment"># dependencies and generated output</span>
+<span class="pattern">node_modules/</span>
+<span class="pattern">dist/</span>
+<span class="pattern">build/</span>
+
+<span class="comment"># local data and logs</span>
+<span class="pattern">*.log</span>
+<span class="pattern">*.env</span>
+
+<span class="comment"># keep examples visible</span>
+<span class="pattern">!.env.example</span></code></pre>
+      </aside>
+    </section>
+
+    <section id="why" class="shell section">
+      <div class="section-heading">
+        <h2>Different tools should not need different ignore rules.</h2>
+        <p>AgentIgnore gives projects a single place to express which files should stay out of passive agent context.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>Reduce context noise</h3>
+          <p>Exclude generated artifacts, dependency folders, logs, and legacy areas that distract retrieval and reasoning.</p>
+        </article>
+        <article class="card">
+          <h3>Lower accidental exposure</h3>
+          <p>Keep sensitive or irrelevant files out of passive discovery while preserving explicit user-directed access semantics.</p>
+        </article>
+        <article class="card">
+          <h3>Stay tool neutral</h3>
+          <p>Define behavior that can work across all major agentic coding tools and future ecosystems.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell section">
+      <div class="callout">
+        <div class="notice-title">
+          <span class="notice-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg></span>
+          <h2>Not a security boundary.</h2>
+        </div>
+        <p>AgentIgnore is intended to reduce accidental exposure to AI coding agents during passive operations. Sensitive files still require proper access control, encryption, secret management, and repository hygiene.</p>
+      </div>
+    </section>
+
+    <section id="prior-art" class="shell section">
+      <div class="section-heading">
+        <h2>Prior art</h2>
+        <p>AgentIgnore does not claim invention of the idea. The project exists to help existing efforts and tool-specific requests converge on a single vendor-neutral standard.</p>
+      </div>
+      <ul class="prior-art-list">
+        <li><a href="https://github.com/tourcoder/agentignore/"><span class="link-type">Repository</span><span class="link-title">agentignore</span><span class="link-context">tourcoder</span></a></li>
+        <li><a href="https://github.com/yurekami/claude-agentignore"><span class="link-type">Repository</span><span class="link-title">claude-agentignore</span><span class="link-context">yurekami</span></a></li>
+        <li><a href="https://github.com/agentsmd/agents.md/issues/33"><span class="link-type">Issue</span><span class="link-title">Specification Extension Request: Standardized ignore files Support in Agents.md Specification</span><span class="link-context">agentsmd/agents.md</span></a></li>
+        <li><a href="https://github.com/openai/codex/issues/2847"><span class="link-type">Issue</span><span class="link-title">A way to exclude sensitive files</span><span class="link-context">openai/codex</span></a></li>
+      </ul>
+      <p class="prior-art-note">And many more across agentic coding tools and adjacent ecosystems.</p>
+    </section>
+
+    <section id="adopt" class="shell section">
+      <div class="wide-panel">
+        <div class="section-heading">
+          <h2>Adopt the draft in three steps.</h2>
+          <p>The current proposal is intentionally narrow: recognize a root-level <code>.agentignore</code>, apply familiar ignore patterns, and keep ignored paths out of passive agent operations.</p>
+        </div>
+        <ol class="steps">
+          <li><strong>1. Add <code>.agentignore</code></strong><span>List files and directories that agents should not passively discover, index, retrieve, summarize, or modify.</span></li>
+          <li><strong>2. Treat ignored files as passive exclusions</strong><span>Ordinary tasks should not cause agents to inspect matching paths unless the user directly names them.</span></li>
+          <li><strong>3. Document override behavior</strong><span>If a tool allows explicit user-directed access, make the ignored status visible to the user.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="shell section">
+      <div class="section-heading">
+        <h2>Project documents</h2>
+        <p>Use the RFC for the current proposal, examples, rationale, and open design space.</p>
+      </div>
+      <div class="doc-list">
+        <a class="doc-link" href="RFC-0001.html">
+          <span><strong>RFC-0001</strong><p>The current proposal, motivation, semantics, and future work.</p></span>
+          <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></span>
+        </a>
+        <a class="doc-link" href="https://github.com/garogarabed12/agentignore#readme">
+          <span><strong>README</strong><p>The repository overview, prior art, and project status.</p></span>
+          <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></span>
+        </a>
+        <a class="doc-link" href="https://github.com/garogarabed12/agentignore/blob/main/CONTRIBUTING.md">
+          <span><strong>CONTRIBUTING.md</strong><p>How to propose changes, report compatibility findings, and participate in RFC discussion.</p></span>
+          <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="shell section">
+      <div class="contribute-panel">
+        <div class="section-heading">
+          <h2>Help shape the standard.</h2>
+          <p>AgentIgnore is a draft proposal. Review the RFC, report compatibility findings, or suggest focused changes through GitHub.</p>
+        </div>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/garogarabed12/agentignore/issues/new?template=spec-feedback.yml">Suggest a spec change</a>
+          <a class="button secondary" href="https://github.com/garogarabed12/agentignore"><span class="link-icon github-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23A11.45 11.45 0 0 1 12 6c1.02 0 2.05.14 3.01.4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.6-2.81 5.61-5.48 5.91.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z"></path></svg></span>View on GitHub</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-row">
+      <span>AgentIgnore is a draft specification proposal licensed under MIT.</span>
+      <span><a href="https://github.com/garogarabed12/agentignore/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></span>
+    </div>
+  </footer>
+</body>
+</html>
