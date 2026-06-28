@@ -200,13 +200,13 @@ Example:
 
 ```text
 .agentignore:
-.env
-secrets/
+*.log
+legacy/
 
 File tree:
-.env
 src/app.ts
-secrets/api-key.txt
+debug.log
+legacy/old-parser.ts
 README.md
 
 Passive agent context SHOULD include:
@@ -214,8 +214,8 @@ src/app.ts
 README.md
 
 Passive agent context MUST NOT include:
-.env
-secrets/api-key.txt
+debug.log
+legacy/old-parser.ts
 ```
 
 ## Tool Compatibility Reports
