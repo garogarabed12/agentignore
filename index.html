@@ -702,17 +702,22 @@
           <span class="light" aria-hidden="true"></span>
           .agentignore
         </div>
-        <pre><code><span class="comment"># dependencies and generated output</span>
+        <pre><code><span class="comment"># Dependencies and generated output</span>
 <span class="pattern">node_modules/</span>
 <span class="pattern">dist/</span>
 <span class="pattern">build/</span>
+<span class="pattern">coverage/</span>
 
-<span class="comment"># local data and logs</span>
+<span class="comment"># Tool and cache directories</span>
+<span class="pattern">.cache/</span>
+<span class="pattern">.tmp/</span>
+
+<span class="comment"># Noisy runtime artifacts</span>
 <span class="pattern">*.log</span>
-<span class="pattern">*.env</span>
 
-<span class="comment"># keep examples visible</span>
-<span class="pattern">!.env.example</span></code></pre>
+<span class="comment"># Legacy or archived code</span>
+<span class="pattern">legacy/</span>
+<span class="pattern">archive/</span></code></pre>
       </aside>
     </section>
 
