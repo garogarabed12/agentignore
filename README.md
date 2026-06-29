@@ -10,10 +10,10 @@ AI coding tools currently use different mechanisms, or no mechanism at all, to d
 
 This leads to:
 
+* accidental inclusion of files that do not belong in agent context
 * unnecessary token consumption
 * slower indexing and retrieval
 * context pollution
-* accidental exposure of sensitive information
 * inconsistent behavior across tools
 
 ## Prior Art
@@ -44,11 +44,22 @@ AgentIgnore introduces a dedicated `.agentignore` file that allows developers to
 ```text
 # .agentignore
 
+# Dependencies and generated output
 node_modules/
 dist/
+build/
+coverage/
+
+# Tool and cache directories
+.cache/
+.tmp/
+
+# Noisy runtime artifacts
 *.log
-*.env
+
+# Legacy or archived code not useful for normal agent context
 legacy/
+archive/
 ```
 
 ## Specification
@@ -69,13 +80,10 @@ Smaller search spaces mean faster indexing, retrieval, and reasoning.
 
 Exclude noise such as archives, generated artifacts, and legacy code to help agents focus on what matters.
 
-### 🔒 Protect Sensitive Information
+### 🧠 Reduce Accidental Context Exposure
 
-Prevent agents from automatically discovering or processing files containing credentials, customer data, compliance documents, or other sensitive content.
+AgentIgnore helps prevent irrelevant files from being included in passive agent operations when they do not belong in the agent's context. This can include generated files, archives, legacy code, internal documentation, local configuration examples, or other files that are not useful for normal agent context. AgentIgnore is not a security boundary. It must not be relied on to protect secrets, private data, or confidential files from malicious tools, compromised systems, unauthorized users, or intentional exfiltration. Sensitive files still require proper access control, secret management, encryption where appropriate, and repository hygiene.
 
-### 🧠 Reduce Context Pollution
-
-Irrelevant files can distract agents and degrade the quality of their responses.
 
 ### 📦 Vendor Neutral
 
@@ -83,13 +91,13 @@ One ignore format that works across OpenCode, Claude Code, Aider, Roo Code, Curs
 
 ### 🔄 Familiar Syntax
 
-Uses the syntax developers already know from `.gitignore` .
+Uses the syntax developers already know from `.gitignore`.
 
-### 🛡️ Separate Security Concerns
+### 🛡️ Separate Concerns
 
-Git protects against accidentally committing files.
+Git controls what gets committed. AgentIgnore controls what compliant tools should exclude from passive agent operations.
+These concerns overlap, but they are not the same. AgentIgnore is for context selection, retrieval quality, and interoperability; not for enforcing security policy.
 
-AgentIgnore protects against accidentally exposing files to AI agents.
 
 ### 🤖 Agent Visibility ≠ Git Visibility
 
@@ -115,3 +123,4 @@ AgentIgnore is not:
 * a replacement for AGENTS.md
 * a replacement for CLAUDE.md
 * a replacement for Git
+* a security boundary
